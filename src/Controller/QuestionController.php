@@ -8,6 +8,7 @@ use App\Service\MarkdownHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -89,6 +90,30 @@ class QuestionController extends AbstractController
             //'questionText' => $parsedQuestionText,
             'answers' => $answers,
         ]);
+    }
+
+
+    /**
+     * @Route("/questions/{slug}/votes", name="app_question_vote", methods="POST")
+     */
+    public function questionVote(Question $question, Request $request, EntityManagerInterface $em){
+        //dd($question, $request->request->all());
+
+        $direction = $request->request->get('direction');
+
+        if($direction === 'up'){
+            $question->upVote();
+        }else{
+            $question->downVote();
+        }
+
+
+        $em->flush();
+
+        return $this->redirectToRoute('app_question_show', [
+           'slug' => $question->getSlug(),
+        ]);
+
     }
 
 
