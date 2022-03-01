@@ -55,6 +55,8 @@ class QuestionController extends AbstractController
             $question->setAskedAt(new \DateTime(sprintf('-%d days', rand(1,100))));
         }
 
+        $question->setVotes(rand(-20, 50));
+
         $em->persist($question);
         $em->flush();
 
@@ -72,7 +74,7 @@ class QuestionController extends AbstractController
         if ($this->isDebug) {
             $this->logger->info('We are in debug mode!');
         }
-        
+
         $answers = [
             'Make sure your cat is sitting `purrrfectly` still 🤣',
             'Honestly, I like furry shoes better than MY cat',

@@ -37,6 +37,11 @@ class Question
      */
     private $askedAt;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $votes = 0;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -88,5 +93,24 @@ class Question
         $this->askedAt = $askedAt;
 
         return $this;
+    }
+
+    public function getVotes(): ?int
+    {
+        return $this->votes;
+    }
+
+    public function setVotes(int $votes): self
+    {
+        $this->votes = $votes;
+
+        return $this;
+    }
+
+    public function getVotesString():string
+    {
+        $prefix = $this->getVotes() >=0 ? '+': '-';
+
+        return sprintf('%s %d',$prefix ,abs($this->getVotes()));
     }
 }
