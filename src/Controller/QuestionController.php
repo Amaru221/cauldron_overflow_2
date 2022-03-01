@@ -25,9 +25,13 @@ class QuestionController extends AbstractController
     /**
      * @Route("/", name="app_homepage")
      */
-    public function homepage()
+    public function homepage(EntityManagerInterface $em)
     {
-        return $this->render('question/homepage.html.twig');
+        $repository = $em->getRepository(Question::class);
+        $questions = $repository->findBy([],['askedAt' => 'DESC']);
+        return $this->render('question/homepage.html.twig', [
+            'questions' => $questions,
+        ]);
     }
 
     /**
